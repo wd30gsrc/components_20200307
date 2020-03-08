@@ -1,28 +1,59 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <Header :username="name" v-model="InputData.condition">
+      <template v-slot:message>
+        <p>Lets enjoy programming!</p>
+      </template>
+    </Header>
+    <Body @add="add1"></Body>
+    <Body @add="add2"></Body>
+    <p>total: {{ totalcount }}</p>
+    <p>condition: {{ InputData.condition }}</p>
+
+    <button @click="componentName = 'Header'">Header</button>
+    <button @click="componentName = 'Body'">Body</button>
+    <keep-alive>
+      <component :is="componentName"></component>
+    </keep-alive>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Header from './components/Header.vue'
+import Body from './components/Body.vue'
 
 export default {
-  name: 'App',
+  data() {
+    return {
+      name: 'UserName',
+      count1: 0,
+      count2: 0,
+      totalcount: 0,
+      InputData: {
+        condition: ""
+      },
+      componentName: 'Header'
+    }
+  },
   components: {
-    HelloWorld
+    Header,
+    Body
+  },
+  methods: {
+    add1(count) {
+      this.count1 = count;
+      this.totalcount = this.count1 + this.count2;
+    },
+    add2(count) {
+      this.count2 = count;
+      this.totalcount = this.count1 + this.count2;
+    }
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style scoped>
+p{
+  color: green;
 }
 </style>
